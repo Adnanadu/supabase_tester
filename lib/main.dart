@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:supa_base_tester/core/secret/secret.dart';
+import 'package:supa_base_tester/core/utils/constants.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(url: supabaseUrl, anonKey: Secret.apiKey);
   runApp(const MyApp());
 }
 
