@@ -13,6 +13,7 @@ class _NotePageState extends State<NotePage> {
 
   //create a note and save it to the supabse
   final textController = TextEditingController();
+
   void addNewNote() async {
     showDialog(
       context: context,
@@ -42,12 +43,41 @@ class _NotePageState extends State<NotePage> {
 
   //read note from supabase
 
+  final notesStream = Supabase.instance.client
+      .from('notes')
+      .stream(primaryKey: ['id']);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: addNewNote,
         child: const Icon(Icons.add),
+      ),
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: notesStream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          //loaded
+          final notes = snapshot.data!;
+          return ListView.builder(
+            itemCount: notes.length,
+            itemBuilder: (context, index) {
+              //get individual note
+              final note = notes[index];
+
+              //get the column you want
+              final noteText = note['body'];
+
+              //return ui
+              return ListTile(
+                title: Text(noteText),
+              );
+            },
+          );
+        },
       ),
     );
   }
