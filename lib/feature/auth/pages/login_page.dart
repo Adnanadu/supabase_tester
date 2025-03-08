@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:supa_base_tester/feature/auth/auth_services.dart';
@@ -42,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 48),
         children: [
           TextField(
             controller: _emailController,

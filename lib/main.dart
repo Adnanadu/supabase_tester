@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supa_base_tester/core/secret/secret.dart';
 import 'package:supa_base_tester/core/utils/constants.dart';
-import 'package:supa_base_tester/feature/notePage/view/pages/note_page.dart';
+import 'package:supa_base_tester/feature/auth/auth_gate.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -18,6 +18,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: NotePage());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: AuthGate());
   }
 }

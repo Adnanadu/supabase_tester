@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:supa_base_tester/feature/auth/auth_services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class NotePage extends StatefulWidget {
-  const NotePage({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<NotePage> createState() => _NotePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _NotePageState extends State<NotePage> {
+class _ProfilePageState extends State<ProfilePage> {
   final supabase = Supabase.instance.client;
 
   //create a note and save it to the supabse
@@ -47,9 +48,24 @@ class _NotePageState extends State<NotePage> {
       .from('notes')
       .stream(primaryKey: ['id']);
 
+  final AuthServices authService = AuthServices();
+  //logout Button Function
+  void logout() async {
+    await supabase.auth.signOut();
+  }
+
+  //get current user email
+
   @override
   Widget build(BuildContext context) {
+    final currentEmail = authService.getCurrentUserEmail();
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Notes'),
+        actions: [
+          IconButton(onPressed: logout, icon: const Icon(Icons.logout)),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: addNewNote,
         child: const Icon(Icons.add),
@@ -62,20 +78,26 @@ class _NotePageState extends State<NotePage> {
           }
           //loaded
           final notes = snapshot.data!;
-          return ListView.builder(
-            itemCount: notes.length,
-            itemBuilder: (context, index) {
-              //get individual note
-              final note = notes[index];
+          return Column(
+            children: [
+              Text(currentEmail!),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: notes.length,
+                  itemBuilder: (context, index) {
+                    //get individual note
+                    final note = notes[index];
 
-              //get the column you want
-              final noteText = note['body'];
+                    //get the column you want
+                    final noteText = note['body'];
 
-              //return ui
-              return ListTile(
-                title: Text(noteText),
-              );
-            },
+                    //return ui
+                    return ListTile(title: Text(noteText));
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),
