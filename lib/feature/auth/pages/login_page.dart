@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:supa_base_tester/feature/auth/auth_services.dart';
+import 'package:supa_base_tester/feature/auth/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -46,11 +47,23 @@ class _LoginPageState extends State<LoginPage> {
             controller: _emailController,
             decoration: const InputDecoration(labelText: 'Email'),
           ),
+          SizedBox(height: 16),
           TextField(
             controller: _passwordController,
             decoration: const InputDecoration(labelText: 'Password'),
           ),
+          SizedBox(height: 16),
           ElevatedButton(onPressed: login, child: const Text('Login')),
+          SizedBox(height: 16),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RegisterPage()),
+              );
+            },
+            child: Center(child: const Text("Don't have an account? Sign up")),
+          ),
         ],
       ),
     );
